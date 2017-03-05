@@ -40,7 +40,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        secondaryMenu.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
         
         sliderContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -48,11 +48,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let smileImage = UIImage.init(named: "smile.png")
         
         monochromeButton.setBackgroundImage(imageByApplyingFilter(smileImage!, filter: monochromeFilter),
-            forState: UIControlState.Normal)
+            for: UIControlState())
         brightnessButton.setBackgroundImage(imageByApplyingFilter(smileImage!, filter: brightnessFilter!),
-            forState: UIControlState.Normal)
+            for: UIControlState())
         contrastButton.setBackgroundImage(imageByApplyingFilter(smileImage!, filter: contrastFilter!),
-            forState: UIControlState.Normal)
+            for: UIControlState())
         
         monochromeButton.titleLabel!.text = nil
         brightnessButton.titleLabel!.text = nil
@@ -60,47 +60,47 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     // MARK: Share
-    @IBAction func onShare(sender: AnyObject) {
+    @IBAction func onShare(_ sender: AnyObject) {
         let activityController = UIActivityViewController(activityItems: ["Check out our really cool app", imageView.image!], applicationActivities: nil)
-        presentViewController(activityController, animated: true, completion: nil)
+        present(activityController, animated: true, completion: nil)
     }
     
     // MARK: New Photo
-    @IBAction func onNewPhoto(sender: AnyObject) {
-        let actionSheet = UIAlertController(title: "New Photo", message: nil, preferredStyle: .ActionSheet)
+    @IBAction func onNewPhoto(_ sender: AnyObject) {
+        let actionSheet = UIAlertController(title: "New Photo", message: nil, preferredStyle: .actionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: "Camera", style: .Default, handler: { action in
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { action in
             self.showCamera()
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Album", style: .Default, handler: { action in
+        actionSheet.addAction(UIAlertAction(title: "Album", style: .default, handler: { action in
             self.showAlbum()
         }))
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        self.presentViewController(actionSheet, animated: true, completion: nil)
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     func showCamera() {
         let cameraPicker = UIImagePickerController()
         cameraPicker.delegate = self
-        cameraPicker.sourceType = .Camera
+        cameraPicker.sourceType = .camera
         
-        presentViewController(cameraPicker, animated: true, completion: nil)
+        present(cameraPicker, animated: true, completion: nil)
     }
     
     func showAlbum() {
         let cameraPicker = UIImagePickerController()
         cameraPicker.delegate = self
-        cameraPicker.sourceType = .PhotoLibrary
+        cameraPicker.sourceType = .photoLibrary
         
-        presentViewController(cameraPicker, animated: true, completion: nil)
+        present(cameraPicker, animated: true, completion: nil)
     }
     
     // MARK: UIImagePickerControllerDelegate
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        dismiss(animated: true, completion: nil)
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             undoFilter()
             
@@ -108,34 +108,34 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: Filter Menu
-    @IBAction func onFilter(sender: UIButton) {
-        if (sender.selected) {
+    @IBAction func onFilter(_ sender: UIButton) {
+        if (sender.isSelected) {
             hideSecondaryMenu()
-            sender.selected = false
+            sender.isSelected = false
         } else {
-            if (sliderContainer.isDescendantOfView(view)) {
+            if (sliderContainer.isDescendant(of: view)) {
                 hideSlider()
-                editButton.selected = false
+                editButton.isSelected = false
             }
             
             showSecondaryMenu()
-            sender.selected = true
+            sender.isSelected = true
         }
     }
     
-    func imageByApplyingFilter(fromImage: UIImage, filter: Filter) -> UIImage {
+    func imageByApplyingFilter(_ fromImage: UIImage, filter: Filter) -> UIImage {
         imageProcessor!.imageFilters = Array.init(arrayLiteral: filter)
         let rgbaImage = RGBAImage.init(image: fromImage)
         
         return imageProcessor!.processImage(rgbaImage!).toUIImage()!
     }
     
-    func applyFilter(filter: Filter)
+    func applyFilter(_ filter: Filter)
     {
         resetImageViewToOldImage()
         
@@ -145,13 +145,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         crossfadeToFilteredImage()
         
-        compareButton.enabled = true
+        compareButton.isEnabled = true
     }
     
-    func animateTransitionToImage(image: UIImage!) {
-        UIView.transitionWithView(self.imageView,
+    func animateTransitionToImage(_ image: UIImage!) {
+        UIView.transition(with: self.imageView,
             duration: 1.0,
-            options: UIViewAnimationOptions.TransitionCrossDissolve,
+            options: UIViewAnimationOptions.transitionCrossDissolve,
             animations: { self.imageView.image = image },
             completion: nil)
     }
@@ -173,35 +173,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         imageProcessor?.imageFilters = [Filter]()
         
-        monochromeButton.selected = false
-        brightnessButton.selected = false
-        contrastButton.selected = false
+        monochromeButton.isSelected = false
+        brightnessButton.isSelected = false
+        contrastButton.isSelected = false
         
-        compareButton.enabled = false
-        editButton.enabled = false
+        compareButton.isEnabled = false
+        editButton.isEnabled = false
     }
     
-    @IBAction func onMonochrome(sender: UIButton) {
-        if (sender.selected == true) {
+    @IBAction func onMonochrome(_ sender: UIButton) {
+        if (sender.isSelected == true) {
             undoFilter()
         }
         else {
             undoFilter()
             
-            sender.selected = true
+            sender.isSelected = true
             
             applyFilter(MonochromeFilter.init())
         }
     }
     
-    @IBAction func onBrightness(sender: UIButton) {
-        if (sender.selected == true) {
+    @IBAction func onBrightness(_ sender: UIButton) {
+        if (sender.isSelected == true) {
             undoFilter()
         }
         else {
             undoFilter()
             
-            sender.selected = true
+            sender.isSelected = true
             
             applyFilter(brightnessFilter!)
             
@@ -209,18 +209,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             slider.maximumValue = 2.0
             slider.value = brightnessFilter!.brightnessChangeFactor
             
-            editButton.enabled = true
+            editButton.isEnabled = true
         }
     }
     
-    @IBAction func onContrast(sender: UIButton) {
-        if (sender.selected == true) {
+    @IBAction func onContrast(_ sender: UIButton) {
+        if (sender.isSelected == true) {
             undoFilter()
         }
         else {
             undoFilter()
             
-            sender.selected = true
+            sender.isSelected = true
             
             applyFilter(contrastFilter!)
             
@@ -228,49 +228,49 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             slider.maximumValue = 3.0
             slider.value = contrastFilter!.contrastChangeFactor
             
-            editButton.enabled = true
+            editButton.isEnabled = true
         }
     }
     
     func showSecondaryMenu() {
         view.addSubview(secondaryMenu)
         
-        let bottomConstraint = secondaryMenu.bottomAnchor.constraintEqualToAnchor(bottomMenu.topAnchor)
-        let leftConstraint = secondaryMenu.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
-        let rightConstraint = secondaryMenu.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
+        let bottomConstraint = secondaryMenu.bottomAnchor.constraint(equalTo: bottomMenu.topAnchor)
+        let leftConstraint = secondaryMenu.leftAnchor.constraint(equalTo: view.leftAnchor)
+        let rightConstraint = secondaryMenu.rightAnchor.constraint(equalTo: view.rightAnchor)
         
-        let heightConstraint = secondaryMenu.heightAnchor.constraintEqualToConstant(44)
+        let heightConstraint = secondaryMenu.heightAnchor.constraint(equalToConstant: 44)
         
-        NSLayoutConstraint.activateConstraints([bottomConstraint, leftConstraint, rightConstraint, heightConstraint])
+        NSLayoutConstraint.activate([bottomConstraint, leftConstraint, rightConstraint, heightConstraint])
         
         view.layoutIfNeeded()
         
         self.secondaryMenu.alpha = 0
-        UIView.animateWithDuration(0.4) {
+        UIView.animate(withDuration: 0.4, animations: {
             self.secondaryMenu.alpha = 1.0
-        }
+        }) 
     }
 
     func hideSecondaryMenu() {
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
             self.secondaryMenu.alpha = 0
-            }) { completed in
+            }, completion: { completed in
                 if completed == true {
                     self.secondaryMenu.removeFromSuperview()
                 }
-        }
+        }) 
     }
     
-    @IBAction func onCompare(sender: UIButton) {
+    @IBAction func onCompare(_ sender: UIButton) {
         if (filteredImage != nil && oldImage != nil) {
             if (imageView.image == filteredImage) {
                 animateTransitionToImage(oldImage)
                 
-                originalLabel.hidden = false
+                originalLabel.isHidden = false
             } else {
                 animateTransitionToImage(filteredImage)
                 
-                originalLabel.hidden = true
+                originalLabel.isHidden = true
             }
         }
     }
@@ -278,49 +278,49 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func showSlider() {
         view.addSubview(sliderContainer)
         
-        let bottomConstraint = sliderContainer.bottomAnchor.constraintEqualToAnchor(bottomMenu.topAnchor)
-        let leftConstraint = sliderContainer.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
-        let rightConstraint = sliderContainer.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
+        let bottomConstraint = sliderContainer.bottomAnchor.constraint(equalTo: bottomMenu.topAnchor)
+        let leftConstraint = sliderContainer.leftAnchor.constraint(equalTo: view.leftAnchor)
+        let rightConstraint = sliderContainer.rightAnchor.constraint(equalTo: view.rightAnchor)
         
-        let heightConstraint = sliderContainer.heightAnchor.constraintEqualToConstant(44)
+        let heightConstraint = sliderContainer.heightAnchor.constraint(equalToConstant: 44)
         
-        NSLayoutConstraint.activateConstraints([bottomConstraint, leftConstraint, rightConstraint, heightConstraint])
+        NSLayoutConstraint.activate([bottomConstraint, leftConstraint, rightConstraint, heightConstraint])
         
         view.layoutIfNeeded()
         
         self.sliderContainer.alpha = 0
-        UIView.animateWithDuration(0.4) {
+        UIView.animate(withDuration: 0.4, animations: {
             self.sliderContainer.alpha = 1.0
-        }
+        }) 
     }
     
     func hideSlider() {
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
             self.sliderContainer.alpha = 0
-            }) { completed in
+            }, completion: { completed in
                 if completed == true {
                     self.sliderContainer.removeFromSuperview()
                 }
-        }
+        }) 
     }
     
-    @IBAction func onEdit(sender: UIButton) {
-        if (sender.selected == false) {
-            sender.selected = true
+    @IBAction func onEdit(_ sender: UIButton) {
+        if (sender.isSelected == false) {
+            sender.isSelected = true
             
-            if (secondaryMenu.isDescendantOfView(view)) {
+            if (secondaryMenu.isDescendant(of: view)) {
                 hideSecondaryMenu()
-                filterButton.selected = false
+                filterButton.isSelected = false
             }
             
             showSlider()
         } else {
-            sender.selected = false
+            sender.isSelected = false
             hideSlider()
         }
     }
     
-    @IBAction func onSliderEditingDidEnd(sender: UISlider) {
+    @IBAction func onSliderEditingDidEnd(_ sender: UISlider) {
         let currentFilter = imageProcessor!.imageFilters.last!
         
         if (currentFilter === contrastFilter) {

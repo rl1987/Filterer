@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class Filter {
-    public func processImage(image: RGBAImage) -> RGBAImage {
+open class Filter {
+    open func processImage(_ image: RGBAImage) -> RGBAImage {
         // Subclasses must implement this.
         return image
     }
 }
 
-public class MonochromeFilter : Filter {
-    public override func processImage(image: RGBAImage) -> RGBAImage {
+open class MonochromeFilter : Filter {
+    open override func processImage(_ image: RGBAImage) -> RGBAImage {
         let rgbaImage = RGBAImage.init(image: image.toUIImage()!)
         
         for i in 0..<rgbaImage!.pixels.count {
@@ -39,8 +39,8 @@ public class MonochromeFilter : Filter {
     }
 }
 
-public class BrightnessFilter : Filter {
-    public var brightnessChangeFactor: Float
+open class BrightnessFilter : Filter {
+    open var brightnessChangeFactor: Float
     
     public override init() {
         brightnessChangeFactor = 1.5
@@ -50,7 +50,7 @@ public class BrightnessFilter : Filter {
         brightnessChangeFactor = abs(factor)
     }
     
-    public override func processImage(image: RGBAImage) -> RGBAImage {
+    open override func processImage(_ image: RGBAImage) -> RGBAImage {
         let rgbaImage = RGBAImage.init(image: image.toUIImage()!)
         
         for i in 0..<rgbaImage!.pixels.count {
@@ -71,8 +71,8 @@ public class BrightnessFilter : Filter {
     }
 }
 
-public class ContrastFilter : Filter {
-    public var contrastChangeFactor : Float
+open class ContrastFilter : Filter {
+    open var contrastChangeFactor : Float
     
     public override init() {
         contrastChangeFactor = 0.5
@@ -83,7 +83,7 @@ public class ContrastFilter : Filter {
     }
     
     
-    public override func processImage(image: RGBAImage) -> RGBAImage {
+    open override func processImage(_ image: RGBAImage) -> RGBAImage {
         let rgbaImage = RGBAImage.init(image: image.toUIImage()!)
         
         var avgRed : Float
@@ -132,14 +132,14 @@ public class ContrastFilter : Filter {
     }
 }
 
-public class ImageProcessor {
-    public var imageFilters: Array<Filter>
+open class ImageProcessor {
+    open var imageFilters: Array<Filter>
     
     public init?(filters : Array<Filter>) {
         imageFilters = filters
     }
     
-    public func processImage(image: RGBAImage) -> RGBAImage {
+    open func processImage(_ image: RGBAImage) -> RGBAImage {
         var processedImage = image
         
         for f in imageFilters {

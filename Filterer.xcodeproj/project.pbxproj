@@ -102,6 +102,7 @@
 					4DC199931BB201E100AA75E7 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 9DJ2VKZ2UF;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -266,6 +267,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = lt.keyspace.Filterer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -280,6 +282,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = lt.keyspace.Filterer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
